@@ -1,0 +1,246 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+ 
+{% block content %}
+
+  <style>
+  div.d3-tip {
+    line-height: 1;
+    font-weight: bold;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 2px;
+    border: solid gray;
+    position: absolute;
+  }
+  .colorkey {
+    width: 50px;
+    height: 50px;
+    border-style: solid;
+    border-color: #BFA0A0;
+    border-radius: 20px;
+    position: relative;
+    top: 47px;  
+    margin-top: 20px;
+  }
+  #verbkey {
+    background-color: blue;
+  }
+  #conjunctionkey {
+    background-color: green;
+  }
+  #prounounkey {
+    background-color: orange;
+  }
+  #prepositionkey {
+    background-color: magenta;
+  }
+  
+
+  /* Creates a small triangle extender for the tooltip */
+/*  .d3-tip:after { 
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.8);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
+  }*/
+ /* .d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+  }*/
+
+  </style>
+  <div>
+    <div id="verbkey" class="colorkey"></div>
+    <div id="conjunctionkey" class="colorkey"></div>
+    <div id="prounounkey" class="colorkey"></div>
+    <div id="prepositionkey" class="colorkey"></div>
+  </div> 
+	<script type="text/javascript"></script>
+	<script>
+	var words = [
+  {"Rank":1,"Word":"the","Pos":"article","Frequency":22038615,"Dispersion":0.98,"Synonyms":"none","":null,"":null,"":null},
+  {"Rank":2,"Word":"be", "Pos":"verb","Frequency":12545825,"Dispersion":0.97,"":null,"":null,"":null,"":null},
+  {"Rank":3,"Word":"and","Pos":"conjunction","Frequency":10741073,"Dispersion":0.99,"":null,"":null,"":null,"":null},
+  {"Rank":4,"Word":"of","Pos":"preposition","Frequency":10343885,"Dispersion":0.97,"":null,"":null,"":null,"":null},
+  {"Rank":5,"Word":"a","Pos":"article","Frequency":10144200,"Dispersion":0.98,"":null,"":null,"":null,"":null},
+  {"Rank":6,"Word":"in","Pos":"preposition","Frequency":6996437,"Dispersion":0.98,"":null,"":null,"":null,"":null},
+  {"Rank":7,"Word":"have","Pos":"verb","Frequency":4303955,"Dispersion":0.97,"":null,"":null,"":null,"":null},
+  {"Rank":8,"Word":"to","Pos":"preposition","Frequency":3856916,"Dispersion":0.99,"":null,"":null,"":null,"":null},
+  {"Rank":9,"Word":"it","Pos":"pronoun","Frequency":3872477,"Dispersion":0.96,"":null,"":null,"":null,"":null},
+  {"Rank":10,"Word":"I","Pos":"pronoun","Frequency":3978265,"Dispersion":0.93,"":null,"":null,"":null,"":null},
+  {"Rank":11,"Word":"that","Pos":"conjunction","Frequency":3430996,"Dispersion":0.97,"":null,"":null,"":null,"":null},
+  {"Rank":12,"Word":"for","Pos":"conjunction","Frequency":3281454,"Dispersion":0.98,"":null,"":null,"":null,"":null},
+  {"Rank":13,"Word":"you","Pos":"pronoun","Frequency":3081151,"Dispersion":0.92,"":null,"":null,"":null,"":null},
+  {"Rank":14,"Word":"he","Pos":"pronoun","Frequency":2909254,"Dispersion":0.94,"":null,"":null,"":null,"":null},
+  {"Rank":15,"Word":"with","Pos":"preposition","Frequency":2683014,"Dispersion":0.99,"":null,"":null,"":null,"":null},
+  {"Rank":16,"Word":"on","Pos":"preposition","Frequency":2485306,"Dispersion":0.99,"":null,"":null,"":null,"":null},
+  {"Rank":17,"Word":"do","Pos":"verb","Frequency":2573587,"Dispersion":0.95,"":null,"":null,"":null,"":null},
+  {"Rank":18,"Word":"say","Pos":"verb","Frequency":1915138,"Dispersion":0.95,"":null,"":null,"":null,"":null},
+  {"Rank":29,"Word":"this","Pos":"preposition","Frequency":1885366,"Dispersion":0.96,"":null,"":null,"":null,"":null},
+  {"Rank":30,"Word":"by","Pos":"verb","Frequency":1490548,"Dispersion":0.96,"":null,"":null,"":null,"":null},
+  {"Rank":31,"Word":"she","Pos":"pronoun","Frequency":1484869,"Dispersion":0.91,"":null,"":null,"":null,"":null},
+  {"Rank":32,"Word":"or","Pos":"conjunction","Frequency":1379320,"Dispersion":0.97,"":null,"":null,"":null,"":null},
+  {"Rank":33,"Word":"as","Pos":"conjunction","Frequency":1296879,"Dispersion":0.98,"":null,"":null,"":null,"":null},
+  {"Rank":34,"Word":"what","Pos":"pronoun","Frequency":1181023,"Dispersion":0.94,"":null,"":null,"":null,"":null},
+  {"Rank":35,"Word":"go","Pos":"verb","Frequency":1151045,"Dispersion":0.93,"":null,"":null,"":null,"":null},
+  {"Rank":36,"Word":"their","Pos":"pronoun","Frequency":1083029,"Dispersion":0.97,"":null,"":null,"":null,"":null},
+  {"Rank":37,"Word":"can","Pos":"verb","Frequency":1022775,"Dispersion":0.98,"":null,"":null,"":null,"":null},
+  {"Rank":38,"Word":"who","Pos":"pronoun","Frequency":1018283,"Dispersion":0.97,"":null,"":null,"":null,"":null},
+  {"Rank":39,"Word":"get","Pos":"verb","Frequency":992596,"Dispersion":0.94,"":null,"":null,"":null,"":null},
+  {"Rank":40,"Word":"if","Pos":"conjunction","Frequency":933542,"Dispersion":0.97,"":null,"":null,"":null,"":null},
+  ]
+
+  for(i=0; i<words.length; i++){
+    if(words[i].Pos==="article")
+      {words[i].color="red"}
+    else if(words[i].Pos==="verb")
+      {words[i].color="blue"}
+    else if(words[i].Pos==="conjunction")
+      {words[i].color="green"}
+    else if(words[i].Pos==="pronoun")
+      {words[i].color="orange"}
+    else if(words[i].Pos==="preposition")
+      {words[i].color="magenta"}
+  }
+
+ 	var dataset = [ 5, 10, 13, 19, 21, 25, 22, 18, 15, 23, 17, 30, 28, 36, 29, 31, 22];
+
+    var w = 1500; 
+
+    var h = 900;
+
+    var svg = d3.select("body")
+    			.append("svg")
+    			.attr("width", w)
+    			.attr("height", h)
+
+    var tip = d3.tip() 
+        .attr('class','d3-tip') 
+        .html(function(d, i) {
+          return "<span style='color:red'>" + d.Word +"</span>";
+      });
+
+    function get_neighboring_ids(element){
+      var x
+      if (element.length ==5){
+        x=1 
+      }
+      else if(element.length ==6){
+        x=2
+      }
+      else if(element.length==7){
+        x=3
+      }
+      var curr_id_num  = parseInt(element.slice(-x));
+      var ids = [];
+      for(var i=1; i<4; i++){
+        ids.push("#rect"+(curr_id_num+i));
+      }
+      return ids;
+    }
+
+    svg.selectAll("rect")
+        .data(words)
+        .enter()
+        .append("rect")
+        .attr("x", function(d, i) {
+          return i*(w/35);
+        })
+        .attr("y", function(d){
+          return (h-(600) 
+            );
+        })
+        .attr("width", 40)
+        .attr("id", function(d, i){return "rect"+i})
+        .attr("class", function(d, i){return d.Pos +" rectangle"})
+        .attr("height", function(d, i){
+          return "400px" 
+        })
+        .on("mouseover", tip.show)
+        .on("mouseout", tip.hide);
+        svg.call(tip);
+
+    $('.rectangle').mouseover(function () {
+      var rect = d3.select("#"+this.id)
+      rect.transition()
+          .duration(500)
+          .attr("width", 58)
+          .attr("height", 415+"px")
+          .style("fill", function(d, i) {return d.color}); 
+      var rect_id = this.id;
+      var ids = get_neighboring_ids(rect_id);
+      var move_first_neighbor = d3.select(ids[0])
+      var move_second_neighbor = d3.select(ids[1])
+      var move_third_neighbor = d3.select(ids[2])
+      var x_pos_1 = parseFloat(move_first_neighbor.attr("x"))+14;
+      var x_pos_2 = parseFloat(move_second_neighbor.attr("x"))+12;
+      var x_pos_3 = parseFloat(move_third_neighbor.attr("x"))+10;
+      move_first_neighbor
+          .transition()
+          .duration(1000)
+          .attr("x", x_pos_1);
+      move_second_neighbor
+          .transition()
+          .duration(850)
+          .attr("x", x_pos_2);
+      move_third_neighbor
+          .transition()
+          .duration(700)
+          .attr("x", x_pos_3);
+      });
+
+    $('.rectangle').mouseleave(function () {
+      var rect = d3.select("#"+this.id)
+      rect.transition()
+          .duration(500)
+          .attr("width", 40)
+          .duration(500)
+          .attr("height", function(d, i){
+            // var barheight = d.Dispersion*100
+            return "400px" 
+          })
+          .style("fill", "black"); 
+      var rect_id = this.id;
+      var ids = get_neighboring_ids(rect_id);
+      var move_first_neighbor = d3.select(ids[0])
+      var move_second_neighbor = d3.select(ids[1])
+      var move_third_neighbor = d3.select(ids[2])
+      var x_pos_1 = parseFloat(move_first_neighbor.attr("x"))-14;
+      console.log("pos mouseleave minus ten"+x_pos_1)
+      console.log("pos no addition "+parseInt(move_second_neighbor.attr("x")))
+      var x_pos_2 = parseFloat(move_second_neighbor.attr("x"))-12;
+      var x_pos_3 = parseFloat(move_third_neighbor.attr("x"))-10;
+      move_first_neighbor
+          .transition()
+          .duration(1000)
+          .attr("x", x_pos_1);
+      move_second_neighbor
+          .transition()
+          .duration(850)
+          .attr("x", x_pos_2);
+      move_third_neighbor
+          .transition()
+          .duration(700)
+          .attr("x", x_pos_3);
+      });
+
+      $(".colorkey").click(function () {
+        var id = this.id;
+        console.log(id);
+      });
+
+
+//all rects with a larger id move a couple of pixels to the right 
+
+
+	</script>
+  
+  
+  {% endblock %}

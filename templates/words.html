@@ -1,0 +1,25 @@
+{% extends "base.html"%}
+
+{% block content %}
+
+{% endblock %}
+
+<table border="1">
+	<div>
+    {% for line in commentsList %}
+    <tr>
+    {% for item in line%}
+    <td>
+    {{item}}
+    </td>
+    {% endfor %}
+    </tr>
+    {% endfor %}
+    </table>
+    </div>
+<!--     <form action="addToComments" method="post">
+    Name: <input type="text" name="username">
+    Comment: <input type="text" name="comment">
+    Date: <input type="date" name="date">
+    <input type="submit" value="Submit">
+    </form>  -->
