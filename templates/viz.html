@@ -184,15 +184,15 @@
       var x_pos_3 = parseFloat(move_third_neighbor.attr("x"))+10;
       move_first_neighbor
           .transition()
-          .duration(1000)
+          .duration(800)
           .attr("x", x_pos_1);
       move_second_neighbor
           .transition()
-          .duration(850)
+          .duration(700)
           .attr("x", x_pos_2);
       move_third_neighbor
           .transition()
-          .duration(700)
+          .duration(600)
           .attr("x", x_pos_3);
       });
 
@@ -203,7 +203,6 @@
           .attr("width", 40)
           .duration(500)
           .attr("height", function(d, i){
-            // var barheight = d.Dispersion*100
             return "400px" 
           })
           .style("fill", "black"); 
@@ -213,27 +212,36 @@
       var move_second_neighbor = d3.select(ids[1])
       var move_third_neighbor = d3.select(ids[2])
       var x_pos_1 = parseFloat(move_first_neighbor.attr("x"))-14;
-      console.log("pos mouseleave minus ten"+x_pos_1)
-      console.log("pos no addition "+parseInt(move_second_neighbor.attr("x")))
       var x_pos_2 = parseFloat(move_second_neighbor.attr("x"))-12;
       var x_pos_3 = parseFloat(move_third_neighbor.attr("x"))-10;
       move_first_neighbor
           .transition()
-          .duration(1000)
+          .duration(800)
           .attr("x", x_pos_1);
       move_second_neighbor
           .transition()
-          .duration(850)
+          .duration(700)
           .attr("x", x_pos_2);
       move_third_neighbor
           .transition()
-          .duration(700)
+          .duration(600)
           .attr("x", x_pos_3);
       });
 
       $(".colorkey").click(function () {
         var id = this.id;
-        console.log(id);
+        var color = $(this).css("background-color");
+        var thisClass;
+        if (id == "verbkey") {
+          thisClass = "verb"
+        }
+        if (id =="prepositionkey") {
+          thisClass = "preposition"
+        }
+        var id= d3.selectAll("."+thisClass)
+        id.transition()
+          .duration(1000)
+          .style("fill", color);
       });
 
 
