@@ -36,6 +36,11 @@
   #prepositionkey {
     background-color: magenta;
   }
+  #corpusform {
+    width: 300px;
+    height: 200px;
+    border: ;
+  }
   
 
   /* Creates a small triangle extender for the tooltip */
@@ -258,11 +263,27 @@
           .style("fill", color);
       });
 
+    $(document).ready(function(){
+      $("#submittext").click(function (){
+        console.log("hey");
+        getCorpus();
+      });
+    })
+
+      function getCorpus(){
+        var text = $("#corpusform").val()
+        console.log(text);
+      }
+
 
 //all rects with a larger id move a couple of pixels to the right 
 
 
 	</script>
+  <form>
+  <input type="text" maxlength="200"id="corpusform" method="POST"><br>
+  <button type="button" id="submittext">submit</button>
+  </form>
   
   
   {% endblock %}
