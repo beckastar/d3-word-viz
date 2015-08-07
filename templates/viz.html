@@ -99,7 +99,7 @@
   {"Rank":37,"Word":"can","Pos":"verb","Frequency":1022775,"Dispersion":0.98,"":null,"":null,"":null,"":null},
   {"Rank":38,"Word":"who","Pos":"pronoun","Frequency":1018283,"Dispersion":0.97,"":null,"":null,"":null,"":null},
   {"Rank":39,"Word":"get","Pos":"verb","Frequency":992596,"Dispersion":0.94,"":null,"":null,"":null,"":null},
-  {"Rank":40,"Word":"if","Pos":"conjunction","Frequency":933542,"Dispersion":0.97,"":null,"":null,"":null,"":null},
+  {"Rank":40,"Word":"if","Pos":"conjunction","Frequency":933542,"Dispersion":0.97,"":null,"":null,"":null,"":null}
   ]
 
   for(i=0; i<words.length; i++){
@@ -264,16 +264,23 @@
       });
 
     $(document).ready(function(){
-      $("#submittext").click(function (){
-        console.log("hey");
-        getCorpus();
-      });
-    })
+        $("#submittext").click(function (){
+          getWord(words);
+        });
+   
+        var getWord = function(arr) {
+          var textarr = $("#corpusform").val().split();                             
+          var word = textarr.pop();
+          for (var i=0; i<arr.length; i++){ 
+            if(arr[i].Word == word){
+              console.log(arr[i].Word + word +" same");
+            }
+          }
+        }
+    
+     });
 
-      function getCorpus(){
-        var text = $("#corpusform").val()
-        console.log(text);
-      }
+
 
 
 //all rects with a larger id move a couple of pixels to the right 
