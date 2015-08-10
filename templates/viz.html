@@ -24,17 +24,20 @@
     top: 47px;  
     margin-top: 20px;
   }
-  #verbkey {
+  .verb.colorkey {
     background-color: blue;
   }
-  #conjunctionkey {
+  .conjunction.colorkey {
     background-color: green;
   }
-  #prounounkey {
+  .pronoun.colorkey {
     background-color: orange;
   }
-  #prepositionkey {
+  .preposition.colorkey {
     background-color: magenta;
+  }
+  .adverb.colorkey {
+    background-color: red;
   }
   #corpusform {
     width: 300px;
@@ -44,7 +47,7 @@
   
 
   /* Creates a small triangle extender for the tooltip */
-/*  .d3-tip:after { 
+  .d3-tip:after { 
     display: inline;
     font-size: 10px;
     width: 100%;
@@ -53,53 +56,78 @@
     content: "\25BC";
     position: absolute;
     text-align: center;
-  }*/
- /* .d3-tip.n:after {
+  }
+  .d3-tip.n:after {
   margin: -1px 0 0 0;
   top: 100%;
   left: 0;
-  }*/
+  }
 
   </style>
   <div>
-    <div id="verbkey" class="colorkey">verb</div>
-    <div id="conjunctionkey" class="colorkey">conjunction</div>
-    <div id="prounounkey" class="colorkey">prounoun</div>
-    <div id="prepositionkey" class="colorkey">preposition</div>
+    <div class="verb colorkey">verb</div>
+    <div class="conjunction colorkey">conjunction</div>
+    <div class="pronoun colorkey">prounoun</div>
+    <div class="preposition colorkey">preposition</div>
+    <div class="adverb colorkey">preposition</div>
   </div> 
 	<script type="text/javascript"></script>
 	<script>
 	var words = [
-  {"Rank":1,"Word":"the","Pos":"article","Frequency":22038615,"Dispersion":0.98,"Synonyms":"none","":null,"":null,"":null},
-  {"Rank":2,"Word":"be", "Pos":"verb","Frequency":12545825,"Dispersion":0.97,"":null,"":null,"":null,"":null},
-  {"Rank":3,"Word":"and","Pos":"conjunction","Frequency":10741073,"Dispersion":0.99,"":null,"":null,"":null,"":null},
-  {"Rank":4,"Word":"of","Pos":"preposition","Frequency":10343885,"Dispersion":0.97,"":null,"":null,"":null,"":null},
-  {"Rank":5,"Word":"a","Pos":"article","Frequency":10144200,"Dispersion":0.98,"":null,"":null,"":null,"":null},
-  {"Rank":6,"Word":"in","Pos":"preposition","Frequency":6996437,"Dispersion":0.98,"":null,"":null,"":null,"":null},
-  {"Rank":7,"Word":"have","Pos":"verb","Frequency":4303955,"Dispersion":0.97,"":null,"":null,"":null,"":null},
-  {"Rank":8,"Word":"to","Pos":"preposition","Frequency":3856916,"Dispersion":0.99,"":null,"":null,"":null,"":null},
-  {"Rank":9,"Word":"it","Pos":"pronoun","Frequency":3872477,"Dispersion":0.96,"":null,"":null,"":null,"":null},
-  {"Rank":10,"Word":"I","Pos":"pronoun","Frequency":3978265,"Dispersion":0.93,"":null,"":null,"":null,"":null},
-  {"Rank":11,"Word":"that","Pos":"conjunction","Frequency":3430996,"Dispersion":0.97,"":null,"":null,"":null,"":null},
-  {"Rank":12,"Word":"for","Pos":"conjunction","Frequency":3281454,"Dispersion":0.98,"":null,"":null,"":null,"":null},
-  {"Rank":13,"Word":"you","Pos":"pronoun","Frequency":3081151,"Dispersion":0.92,"":null,"":null,"":null,"":null},
-  {"Rank":14,"Word":"he","Pos":"pronoun","Frequency":2909254,"Dispersion":0.94,"":null,"":null,"":null,"":null},
-  {"Rank":15,"Word":"with","Pos":"preposition","Frequency":2683014,"Dispersion":0.99,"":null,"":null,"":null,"":null},
-  {"Rank":16,"Word":"on","Pos":"preposition","Frequency":2485306,"Dispersion":0.99,"":null,"":null,"":null,"":null},
-  {"Rank":17,"Word":"do","Pos":"verb","Frequency":2573587,"Dispersion":0.95,"":null,"":null,"":null,"":null},
-  {"Rank":18,"Word":"say","Pos":"verb","Frequency":1915138,"Dispersion":0.95,"":null,"":null,"":null,"":null},
-  {"Rank":29,"Word":"this","Pos":"preposition","Frequency":1885366,"Dispersion":0.96,"":null,"":null,"":null,"":null},
-  {"Rank":30,"Word":"by","Pos":"verb","Frequency":1490548,"Dispersion":0.96,"":null,"":null,"":null,"":null},
-  {"Rank":31,"Word":"she","Pos":"pronoun","Frequency":1484869,"Dispersion":0.91,"":null,"":null,"":null,"":null},
-  {"Rank":32,"Word":"or","Pos":"conjunction","Frequency":1379320,"Dispersion":0.97,"":null,"":null,"":null,"":null},
-  {"Rank":33,"Word":"as","Pos":"conjunction","Frequency":1296879,"Dispersion":0.98,"":null,"":null,"":null,"":null},
-  {"Rank":34,"Word":"what","Pos":"pronoun","Frequency":1181023,"Dispersion":0.94,"":null,"":null,"":null,"":null},
-  {"Rank":35,"Word":"go","Pos":"verb","Frequency":1151045,"Dispersion":0.93,"":null,"":null,"":null,"":null},
-  {"Rank":36,"Word":"their","Pos":"pronoun","Frequency":1083029,"Dispersion":0.97,"":null,"":null,"":null,"":null},
-  {"Rank":37,"Word":"can","Pos":"verb","Frequency":1022775,"Dispersion":0.98,"":null,"":null,"":null,"":null},
-  {"Rank":38,"Word":"who","Pos":"pronoun","Frequency":1018283,"Dispersion":0.97,"":null,"":null,"":null,"":null},
-  {"Rank":39,"Word":"get","Pos":"verb","Frequency":992596,"Dispersion":0.94,"":null,"":null,"":null,"":null},
-  {"Rank":40,"Word":"if","Pos":"conjunction","Frequency":933542,"Dispersion":0.97,"":null,"":null,"":null,"":null}
+  {"Rank":1,"Word":"the","Pos":"article","Frequency":22038615,"Dispersion":0.98, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":2,"Word":"be", "Pos":"verb","Frequency":12545825,"Dispersion":0.97, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":3,"Word":"and","Pos":"conjunction","Frequency":10741073,"Dispersion":0.99, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":4,"Word":"of","Pos":"preposition","Frequency":10343885,"Dispersion":0.97, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":5,"Word":"a","Pos":"article","Frequency":10144200,"Dispersion":0.98, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":6,"Word":"in","Pos":"preposition","Frequency":6996437,"Dispersion":0.98, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":7,"Word":"have","Pos":"verb","Frequency":4303955,"Dispersion":0.97, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":8,"Word":"to","Pos":"preposition","Frequency":3856916,"Dispersion":0.99, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":9,"Word":"it","Pos":"pronoun","Frequency":3872477,"Dispersion":0.96, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":10,"Word":"I","Pos":"pronoun","Frequency":3978265,"Dispersion":0.93, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":11,"Word":"that","Pos":"conjunction","Frequency":3430996,"Dispersion":0.97, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":12,"Word":"for","Pos":"conjunction","Frequency":3281454,"Dispersion":0.98, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":13,"Word":"you","Pos":"pronoun","Frequency":3081151,"Dispersion":0.92, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":14,"Word":"he","Pos":"pronoun","Frequency":2909254,"Dispersion":0.94, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":15,"Word":"with","Pos":"preposition","Frequency":2683014,"Dispersion":0.99, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":16,"Word":"on","Pos":"preposition","Frequency":2485306,"Dispersion":0.99, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":17,"Word":"do","Pos":"verb","Frequency":2573587,"Dispersion":0.95, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":18,"Word":"say","Pos":"verb","Frequency":1915138,"Dispersion":0.95, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":29,"Word":"this","Pos":"preposition","Frequency":1885366,"Dispersion":0.96, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":30,"Word":"by","Pos":"verb","Frequency":1490548,"Dispersion":0.96, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":31,"Word":"she","Pos":"pronoun","Frequency":1484869,"Dispersion":0.91, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":32,"Word":"or","Pos":"conjunction","Frequency":1379320,"Dispersion":0.97, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":33,"Word":"as","Pos":"conjunction","Frequency":1296879,"Dispersion":0.98, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":34,"Word":"what","Pos":"pronoun","Frequency":1181023,"Dispersion":0.94, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":35,"Word":"go","Pos":"verb","Frequency":1151045,"Dispersion":0.93, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":36,"Word":"their","Pos":"pronoun","Frequency":1083029,"Dispersion":0.97, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":37,"Word":"can","Pos":"verb","Frequency":1022775,"Dispersion":0.98, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":38,"Word":"who","Pos":"pronoun","Frequency":1018283,"Dispersion":0.97, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":39,"Word":"get","Pos":"verb","Frequency":992596,"Dispersion":0.94, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":40,"Word":"if","Pos":"conjunction","Frequency":933542,"Dispersion":0.97, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":52,"Word":"time","Pos":"noun","Frequency":764657,"Dispersion":0.98, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":53,"Word":"there","Pos":"e","Frequency":784528,"Dispersion":0.96, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":54,"Word":"year","Pos":"noun","Frequency":769254,"Dispersion":0.96, "Synonyms":true, "Conjugations":"[]"},
+  {"Rank":55,"Word":"so","Pos":"conjunction","Frequency":756550,"Dispersion":0.95, "Synonyms":true, "Conjugations":"[]"},
+  {"Rank":56,"Word":"think","Pos":"verb","Frequency":772787,"Dispersion":0.91, "Synonyms":true, "Conjugations":"[]"},
+  {"Rank":57,"Word":"when","Pos":"adverb","Frequency":678626,"Dispersion":0.98, "Synonyms":false, "Conjugations":"[]"},  //why is it stopping here?
+  {"Rank":58,"Word":"which","Pos":"pronoun","Frequency":685982,"Dispersion":0.96, "Synonyms":true, "Conjugations":"[]"},
+  {"Rank":59,"Word":"them","Pos":"pronoun","Frequency":677870,"Dispersion":0.97, "Synonyms":true, "Conjugations":"[]"},
+  {"Rank":60,"Word":"some","Pos":"adjective","Frequency":674193,"Dispersion":0.98, "Synonyms":true, "Conjugations":"[]"},
+  {"Rank":61,"Word":"me","Pos":"pronoun","Frequency":709623,"Dispersion":0.92, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":62,"Word":"people","Pos":"noun","Frequency":691468,"Dispersion":0.95, "Synonyms":true, "Conjugations":"[]"},
+  {"Rank":63,"Word":"take","Pos":"verb","Frequency":670745,"Dispersion":0.97, "Synonyms":true, "Conjugations":"[]"},
+  {"Rank":64,"Word":"out","Pos":"r","Frequency":678603,"Dispersion":0.96, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":65,"Word":"into","Pos":"i","Frequency":668172,"Dispersion":0.97, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":66,"Word":"just","Pos":"r","Frequency":677711,"Dispersion":0.94, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":67,"Word":"see","Pos":"verb","Frequency":663645,"Dispersion":0.96, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":68,"Word":"him","Pos":"pronoun","Frequency":677707,"Dispersion":0.92, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":69,"Word":"your","Pos":"a","Frequency":659622,"Dispersion":0.94, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":70,"Word":"come","Pos":"verb","Frequency":628254,"Dispersion":0.95, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":71,"Word":"could","Pos":"verb","Frequency":617932,"Dispersion":0.96, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":72,"Word":"now","Pos":"adverb","Frequency":605997,"Dispersion":0.94, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":73,"Word":"than","Pos":"c","Frequency":579757,"Dispersion":0.97, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":74,"Word":"like","Pos":"i","Frequency":568850,"Dispersion":0.96, "Synonyms":false, "Conjugations":"[]"},
+  {"Rank":75,"Word":"other","Pos":"adverb","Frequency":547799,"Dispersion":0.97, "Synonyms":true, "Conjugations":"[]"}
   ]
 
   for(i=0; i<words.length; i++){
@@ -113,11 +141,11 @@
       {words[i].color="orange"}
     else if(words[i].Pos==="preposition")
       {words[i].color="magenta"}
+    else if(words[i].Pos==="adverb")
+      {words[i].color==="red"}
   }
 
- 	var dataset = [ 5, 10, 13, 19, 21, 25, 22, 18, 15, 23, 17, 30, 28, 36, 29, 31, 22];
-
-    var w = 1500; 
+    var w = 3600; 
 
     var h = 900;
 
@@ -156,15 +184,15 @@
         .enter()
         .append("rect")
         .attr("x", function(d, i) {
-          return i*(w/35);
+          return i*(w/55);
         })
         .attr("y", function(d){
           return (h-(600) 
             );
         })
         .attr("width", 40)
-        .attr("id", function(d, i){return "rect"+i})
-        .attr("class", function(d, i){return d.Pos +" rectangle"})
+        .attr("id", function(d, i){return "rect"+i} )
+        .attr("class", function(d, i){return d.Pos +" rectangle" + " " + d.Word})
         .attr("height", function(d, i){
           return "400px" 
         })
@@ -172,41 +200,33 @@
         .on("mouseout", tip.hide);
         svg.call(tip);
 
-    $('.rectangle').mouseover(function () {
-      var rect = d3.select("#"+this.id)
-      rect.transition()
-          .duration(500)
-          .attr("width", 58)
-          .attr("height", 415+"px")
-          .style("fill", function(d, i) {return d.color}); 
-      var rect_id = this.id;
-      var ids = get_neighboring_ids(rect_id);
-      var move_first_neighbor = d3.select(ids[0])
-      var move_second_neighbor = d3.select(ids[1])
-      var move_third_neighbor = d3.select(ids[2])
-      var x_pos_1 = parseFloat(move_first_neighbor.attr("x"))+14;
-      var x_pos_2 = parseFloat(move_second_neighbor.attr("x"))+12;
-      var x_pos_3 = parseFloat(move_third_neighbor.attr("x"))+10;
-      move_first_neighbor
-          .transition()
-          .duration(800)
-          .attr("x", x_pos_1);
-      move_second_neighbor
-          .transition()
-          .duration(700)
-          .attr("x", x_pos_2);
-      move_third_neighbor
-          .transition()
-          .duration(600)
-          .attr("x", x_pos_3);
-      });
+          // .style("fill", function(d, i) {return d.color}); 
+      // var ids = get_neighboring_ids(id);
+      // var move_first_neighbor = d3.select(ids[0])
+      // var move_second_neighbor = d3.select(ids[1])
+      // var move_third_neighbor = d3.select(ids[2])
+      // var x_pos_1 = parseFloat(move_first_neighbor.attr("x"))+14;
+      // var x_pos_2 = parseFloat(move_second_neighbor.attr("x"))+12;
+      // var x_pos_3 = parseFloat(move_third_neighbor.attr("x"))+10;
+      // move_first_neighbor
+      //     .transition()
+      //     .duration(400)
+      //     .attr("x", x_pos_1);
+      // move_second_neighbor
+      //     .transition()
+      //     .duration(500)
+      //     .attr("x", x_pos_2);
+      // move_third_neighbor
+      //     .transition()
+      //     .duration(600)
+      //     .attr("x", x_pos_3);
+      // });
 
     $('.rectangle').mouseleave(function () {
       var rect = d3.select("#"+this.id)
       rect.transition()
-          .duration(500)
+          .duration(400)
           .attr("width", 40)
-          .duration(500)
           .attr("height", function(d, i){
             return "400px" 
           })
@@ -232,60 +252,65 @@
           .duration(600)
           .attr("x", x_pos_3);
       });
-
+      //
       $(".colorkey").click(function () {
         var color = $(this).css("background-color");
-        var id=this.id;
-        var thisClass;
-        console.log(this.id);
-        if (id == "verbkey") {
-          thisClass = ".verb"
-        console.log(thisClass)
-        }
-        else if (id =="prepositionkey") {
-          thisClass = ".preposition"
-        console.log(thisClass)
-        }
-        else if (id == "conjunctionkey") {
-          thisClass = ".conjunction"
-        console.log(thisClass)
-
-        }
-        else if (id == "prounounkey") {
-          thisClass = ".pronoun"
-        console.log(thisClass)
-          
-        }
-        console.log(thisClass)
-        var changeColor = d3.selectAll(thisClass);
+        var currClasses = $(this).attr("class");
+        var targetClass = currClasses.split(" ");
+        var target = "."+targetClass[0]
+        console.log(target);
+        var changeColor = d3.selectAll(target);
         changeColor.transition()
-          .duration(1000)
-          .style("fill", color);
+                  .duration(1000)
+                  .style("fill", color);
       });
 
     $(document).ready(function(){
+        $('.rectangle').mouseover(function () {
+          var id = "#"+this.id
+          var rect = d3.select(id);
+          rect.transition()
+              .duration(500)
+              .attr("width", 58)
+              .attr("height", 415)
+              .style("fill", function(d, i) {return d.color}); 
+          var ids = get_neighboring_ids(id);
+          var move_first_neighbor = d3.select(ids[0])
+          var move_second_neighbor = d3.select(ids[1])
+          var move_third_neighbor = d3.select(ids[2])
+          var x_pos_1 = parseFloat(move_first_neighbor.attr("x"))+14;
+          var x_pos_2 = parseFloat(move_second_neighbor.attr("x"))+12;
+          var x_pos_3 = parseFloat(move_third_neighbor.attr("x"))+10;
+          move_first_neighbor
+              .transition()
+              .duration(400)
+              .attr("x", x_pos_1);
+          move_second_neighbor
+              .transition()
+              .duration(500)
+              .attr("x", x_pos_2);
+          move_third_neighbor
+              .transition()
+              .duration(600)
+              .attr("x", x_pos_3);
+            });
+
+
         $("#submittext").click(function (){
           getWord(words);
         });
-   
         var getWord = function(arr) {
           var textarr = $("#corpusform").val().split();                             
           var word = textarr.pop();
           for (var i=0; i<arr.length; i++){ 
             if(arr[i].Word == word){
               console.log(arr[i].Word + word +" same");
+              $("#"+word).css("background-color")
             }
           }
         }
     
      });
-
-
-
-
-//all rects with a larger id move a couple of pixels to the right 
-
-
 	</script>
   <form>
   <input type="text" maxlength="200"id="corpusform" method="POST"><br>
