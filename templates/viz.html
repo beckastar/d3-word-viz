@@ -1,10 +1,25 @@
 <!-- extend base layout -->
+<!-- to do:  get less preprocessor  -->
 {% extends "base.html" %}
  
 {% block content %}
 
   <style>
-  div.d3-tip {
+  #wordSquares {
+    position: relative;
+    left: -55%;
+    top: 550;
+    -webkit-transform:rotate(90deg);
+    -o-transform:rotate(90deg);
+    -moz-transform:rotate(90deg);
+  }
+  #header {
+    width: 100%;
+    height: 200px;
+    background-color: red;
+  }
+
+  .d3-tip {
     line-height: 1;
     font-weight: bold;
     padding: 12px;
@@ -40,13 +55,19 @@
     background-color: red;
   }
   #corpusform {
-    width: 300px;
-    height: 200px;
-    border: ;
+    position: relative;
+    right: -38%;
+    bottom: 1000px;
   }
-  
+  #inputbox {
+    width: 1000px;
+    height: 1000px;
+  }
 
-  /* Creates a small triangle extender for the tooltip */
+  input[type="text"]{
+    font-size: 1000%;
+    color: #B09898;
+  }
   .d3-tip:after { 
     display: inline;
     font-size: 10px;
@@ -64,12 +85,15 @@
   }
 
   </style>
+  <div id="header"></div>
   <div>
     <div class="verb colorkey">verb</div>
     <div class="conjunction colorkey">conjunction</div>
     <div class="pronoun colorkey">prounoun</div>
     <div class="preposition colorkey">preposition</div>
     <div class="adverb colorkey">preposition</div>
+
+    <div id="wordSquares"></div>
   </div> 
 	<script type="text/javascript"></script>
 	<script>
@@ -130,6 +154,7 @@
   {"Rank":75,"Word":"other","Pos":"adverb","Frequency":547799,"Dispersion":0.97, "Synonyms":true, "Conjugations":"[]"}
   ]
 
+  //fix dataset in excel later 
   for(i=0; i<words.length; i++){
     if(words[i].Pos==="article")
       {words[i].color="red"}
@@ -144,21 +169,6 @@
     else if(words[i].Pos==="adverb")
       {words[i].color==="red"}
   }
-
-    var w = 3600; 
-
-    var h = 900;
-
-    var svg = d3.select("body")
-    			.append("svg")
-    			.attr("width", w)
-    			.attr("height", h)
-
-    var tip = d3.tip() 
-        .attr('class','d3-tip') 
-        .html(function(d, i) {
-          return "<span style='color:red'>" + d.Word +"</span>";
-      });
 
     function get_neighboring_ids(element){
       var x
@@ -179,26 +189,47 @@
       return ids;
     }
 
-    svg.selectAll("rect")
+    var w = 3600; 
+
+    var h = 900;
+
+    var tip = d3.tip() 
+                .attr('class','d3-tip') 
+                .html(function(d, i) {
+                  return "<span style='color:red'>" + d.Word +"</span>";
+              });
+
+    var svg = d3.select("#wordSquares")
+          			.append("svg")
+          			.attr("width", w)
+          			.attr("height", h)
+
+    svg.selectAll("div")
         .data(words)
         .enter()
         .append("rect")
+        // .attr('transform','translate(100,1)')
         .attr("x", function(d, i) {
-          return i*(w/55);
+          return i*(w/50);
         })
         .attr("y", function(d){
-          return (h-(600) 
+          return (h-(850) 
             );
         })
         .attr("width", 40)
         .attr("id", function(d, i){return "rect"+i} )
         .attr("class", function(d, i){return d.Pos +" rectangle" + " " + d.Word})
         .attr("height", function(d, i){
-          return "400px" 
+          return "100px" 
         })
+        .style("fill", "black")
         .on("mouseover", tip.show)
         .on("mouseout", tip.hide);
         svg.call(tip);
+
+
+
+
 
           // .style("fill", function(d, i) {return d.color}); 
       // var ids = get_neighboring_ids(id);
@@ -252,7 +283,7 @@
           .duration(600)
           .attr("x", x_pos_3);
       });
-      //
+      
       $(".colorkey").click(function () {
         var color = $(this).css("background-color");
         var currClasses = $(this).attr("class");
@@ -266,6 +297,7 @@
       });
 
     $(document).ready(function(){
+
         $('.rectangle').mouseover(function () {
           var id = "#"+this.id
           var rect = d3.select(id);
@@ -295,27 +327,30 @@
               .attr("x", x_pos_3);
             });
 
-
         $("#submittext").click(function (){
           getWord(words);
         });
-        var getWord = function(arr) {
-          var textarr = $("#corpusform").val().split();                             
+        var getWord = function(arr) { 
+          var textarr = $("#inputBox").val().split(); 
           var word = textarr.pop();
           for (var i=0; i<arr.length; i++){ 
             if(arr[i].Word == word){
               console.log(arr[i].Word + word +" same");
-              $("#"+word).css("background-color")
+              var classes = $("."+word).attr("class");
+              console.log(classes.split(" ")[0]);
+              $("."+word).css("fill", "red")
             }
           }
         }
     
      });
 	</script>
+  <div id="corpusform">
   <form>
-  <input type="text" maxlength="200"id="corpusform" method="POST"><br>
+  <input type="text" maxlength="200" id="inputBox" method="POST"><br>
   <button type="button" id="submittext">submit</button>
   </form>
+  </div>
   
   
   {% endblock %}
