@@ -230,62 +230,6 @@
         .on("mouseout", tip.hide);
         svg.call(tip);
 
-
-
-
-
-          // .style("fill", function(d, i) {return d.color}); 
-      // var ids = get_neighboring_ids(id);
-      // var move_first_neighbor = d3.select(ids[0])
-      // var move_second_neighbor = d3.select(ids[1])
-      // var move_third_neighbor = d3.select(ids[2])
-      // var x_pos_1 = parseFloat(move_first_neighbor.attr("x"))+14;
-      // var x_pos_2 = parseFloat(move_second_neighbor.attr("x"))+12;
-      // var x_pos_3 = parseFloat(move_third_neighbor.attr("x"))+10;
-      // move_first_neighbor
-      //     .transition()
-      //     .duration(400)
-      //     .attr("x", x_pos_1);
-      // move_second_neighbor
-      //     .transition()
-      //     .duration(500)
-      //     .attr("x", x_pos_2);
-      // move_third_neighbor
-      //     .transition()
-      //     .duration(600)
-      //     .attr("x", x_pos_3);
-      // });
-
-    $('.rectangle').mouseleave(function () {
-      var rect = d3.select("#"+this.id)
-      rect.transition()
-          .duration(400)
-          .attr("width", 40)
-          .attr("height", function(d, i){
-            return "400px" 
-          })
-          .style("fill", "black"); 
-      var rect_id = this.id;
-      var ids = get_neighboring_ids(rect_id);
-      var move_first_neighbor = d3.select(ids[0])
-      var move_second_neighbor = d3.select(ids[1])
-      var move_third_neighbor = d3.select(ids[2])
-      var x_pos_1 = parseFloat(move_first_neighbor.attr("x"))-14;
-      var x_pos_2 = parseFloat(move_second_neighbor.attr("x"))-12;
-      var x_pos_3 = parseFloat(move_third_neighbor.attr("x"))-10;
-      move_first_neighbor
-          .transition()
-          .duration(800)
-          .attr("x", x_pos_1);
-      move_second_neighbor
-          .transition()
-          .duration(700)
-          .attr("x", x_pos_2);
-      move_third_neighbor
-          .transition()
-          .duration(600)
-          .attr("x", x_pos_3);
-      });
       
       $(".colorkey").click(function () {
         var color = $(this).css("background-color");
@@ -307,7 +251,7 @@
           rect.transition()
               .duration(500)
               .attr("width", 58)
-              .attr("height", 415)
+              .attr("height", 150)
               .style("fill", function(d, i) {return d.color}); 
           var ids = get_neighboring_ids(id);
           var move_first_neighbor = d3.select(ids[0])
@@ -329,6 +273,37 @@
               .duration(600)
               .attr("x", x_pos_3);
             });
+        
+        $('.rectangle').mouseleave(function () {
+          var rect = d3.select("#"+this.id)
+          rect.transition()
+              .duration(400)
+              .attr("width", 40)
+              .attr("height", function(d, i){
+                return "100px" 
+              })
+              .style("fill", "black"); 
+          var rect_id = this.id;
+          var ids = get_neighboring_ids(rect_id);
+          var move_first_neighbor = d3.select(ids[0])
+          var move_second_neighbor = d3.select(ids[1])
+          var move_third_neighbor = d3.select(ids[2])
+          var x_pos_1 = parseFloat(move_first_neighbor.attr("x"))-14;
+          var x_pos_2 = parseFloat(move_second_neighbor.attr("x"))-12;
+          var x_pos_3 = parseFloat(move_third_neighbor.attr("x"))-10;
+          move_first_neighbor
+              .transition()
+              .duration(800)
+              .attr("x", x_pos_1);
+          move_second_neighbor
+              .transition()
+              .duration(700)
+              .attr("x", x_pos_2);
+          move_third_neighbor
+              .transition()
+              .duration(600)
+              .attr("x", x_pos_3);
+      });
 
         $("#submittext").click(function (){
           getWord(words);
