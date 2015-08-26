@@ -5,18 +5,49 @@
 {% block content %}
 
   <style>
+  body{
+    overflow: hidden;
+  }
   #wordSquares {
     position: relative;
-    left: -55%;
-    top: 550;
+    /*left:  -2800;*/
+    top: 10px;
+    height: 100px;
+    /*overflow-y: scroll;*/
+    position: relative;
     -webkit-transform:rotate(90deg);
     -o-transform:rotate(90deg);
     -moz-transform:rotate(90deg);
   }
+  #wordContainer {
+    /*background-color: red;*/
+    position: relative;
+    width: 300px;
+    height: 500px;
+    left: 50px;
+    top: -2%;
+    /* top: 2087px; */
+    height: 80%;
+    overflow: scroll;
+
+  }
   #header {
     width: 100%;
-    height: 200px;
-    background-color: red;
+    height: 23%;
+    background-color: #F6F6F6;
+    z-index: -1;
+  }
+  #headerimage {
+    position: relative;
+    width: 110%;
+  }
+
+  #dividingline{
+    height: 15px;
+    width: 100%;
+    background-color: black;
+    bottom: 15px;
+    position: relative;
   }
 
   .d3-tip {
@@ -29,15 +60,18 @@
     border: solid gray;
     position: absolute;
   }
+/*  #colorkeygroup {
+  }*/
   .colorkey {
+    position: relative;
+    left: 8%;
     width: 50px;
     height: 50px;
     border-style: solid;
     border-color: #BFA0A0;
     border-radius: 20px;
-    position: relative;
-    top: 47px;  
-    margin-top: 20px;
+    top: 7px;
+    z-index: 5;
   }
   .verb.colorkey {
     background-color: blue;
@@ -56,20 +90,36 @@
   }
   #corpusform {
     position: relative;
-    right: -38%;
-    bottom: 1000px;
+    right: -30%;
+    top: -100%;
   }
   #inputbox {
     width: 2500px;
     height: 1500px;
     position: relative;
+    top: 800;
     left: -100px;
   }
+  #paragraph {
+    position: relative;
+    top: 1000;
+    left: 2000;
+    color: red;
+    font-size: 16px;
+  }
 
-  input[type="text"]{
+  textarea{
     font-size: 1000%;
     font-family: courier;
     color: #B09898;
+    resize: none;
+    outline: 0;
+  }
+
+  .shadow {
+    -webkit-box-shadow: 00 18px 37px -11px black;
+    -moz-box-shadow: 0 18px 37px -11px black;
+    box-shadow: 0 18px 37px -11px black;
   }
   .d3-tip:after { 
     display: inline;
@@ -87,15 +137,28 @@
   left: 0;
   }
 
-  </style>
-  <div id="header"></div>
-  <div>
-    <div class="verb colorkey">verb</div>
-    <div class="conjunction colorkey">conjunction</div>
-    <div class="pronoun colorkey">prounoun</div>
-    <div class="preposition colorkey">preposition</div>
-    <div class="adverb colorkey">preposition</div>
+  #temp {
+    width: 10px;
+    height: 20px;
+    background-color: orange;
+  }
 
+  </style>
+  <div id="header">
+      <div >
+        <img id="headerimage" src="../static/img/visvocab.jpg">
+      </div> 
+      <div id="dividingline"></div>
+    <div id="buttonpanel"> 
+        <button class="verb colorkey"></button>
+        <button class="conjunction colorkey"></button>
+        <button class="pronoun colorkey"></button>
+        <button class="preposition colorkey"></button>
+        <button class="adverb colorkey"></button>
+    </div>
+  </div>
+
+  <div id="wordContainer">
     <div id="wordSquares"></div>
   </div> 
 	<script type="text/javascript"></script>
@@ -231,25 +294,36 @@
         svg.call(tip);
 
       
-      $(".colorkey").click(function () {
-        var color = $(this).css("background-color");
-        var currClasses = $(this).attr("class");
-        var targetClass = currClasses.split(" ");
-        var target = "."+targetClass[0]
-        console.log(target);
-        var changeColor = d3.selectAll(target);
-        changeColor.transition()
-                  .duration(1000)
-                  .style("fill", color);
-      });
 
     $(document).ready(function(){
+
+        // $(function() {
+        //     $("#wordSquares").mousewheel(function(event, delta) {
+        //       console.log("hey")
+        //         this.scrollLeft -= (delta * -100);
+        //         event.preventDefault();
+        //     });
+        // });
+
+        $(".colorkey").click(function (e) {
+          console.log("clicked");
+          var color = $(this).css("background-color");
+          var currClasses = $(this).attr("class");
+          var targetClass = currClasses.split(" ");
+          var target = "."+targetClass[0]
+          console.log(target);
+          var changeColor = d3.selectAll(target);
+          changeColor.transition()
+                    .duration(1000)
+                    .style("fill", color);
+          e.stopPropagation();
+        });
 
         $('.rectangle').mouseover(function () {
           var id = "#"+this.id
           var rect = d3.select(id);
           rect.transition()
-              .duration(500)
+              .duration(100)
               .attr("width", 58)
               .attr("height", 150)
               .style("fill", function(d, i) {return d.color}); 
@@ -262,73 +336,109 @@
           var x_pos_3 = parseFloat(move_third_neighbor.attr("x"))+10;
           move_first_neighbor
               .transition()
-              .duration(400)
+              .duration(200)
               .attr("x", x_pos_1);
           move_second_neighbor
               .transition()
-              .duration(500)
+              .duration(100)
               .attr("x", x_pos_2);
           move_third_neighbor
               .transition()
-              .duration(600)
+              .duration(200)
               .attr("x", x_pos_3);
             });
         
         $('.rectangle').mouseleave(function () {
-          var rect = d3.select("#"+this.id)
-          rect.transition()
-              .duration(400)
-              .attr("width", 40)
-              .attr("height", function(d, i){
-                return "100px" 
-              })
-              .style("fill", "black"); 
-          var rect_id = this.id;
-          var ids = get_neighboring_ids(rect_id);
-          var move_first_neighbor = d3.select(ids[0])
-          var move_second_neighbor = d3.select(ids[1])
-          var move_third_neighbor = d3.select(ids[2])
-          var x_pos_1 = parseFloat(move_first_neighbor.attr("x"))-14;
-          var x_pos_2 = parseFloat(move_second_neighbor.attr("x"))-12;
-          var x_pos_3 = parseFloat(move_third_neighbor.attr("x"))-10;
-          move_first_neighbor
-              .transition()
-              .duration(800)
-              .attr("x", x_pos_1);
-          move_second_neighbor
-              .transition()
-              .duration(700)
-              .attr("x", x_pos_2);
-          move_third_neighbor
-              .transition()
-              .duration(600)
-              .attr("x", x_pos_3);
-      });
+            var rect = d3.select("#"+this.id)
+            rect.transition()
+                .duration(100)
+                .attr("width", 40)
+                .attr("height", function(d, i){
+                  return "100px" 
+                })
+                .style("fill", "black"); 
+            var rect_id = this.id;
+            var ids = get_neighboring_ids(rect_id);
+            var move_first_neighbor = d3.select(ids[0])
+            var move_second_neighbor = d3.select(ids[1])
+            var move_third_neighbor = d3.select(ids[2])
+            var x_pos_1 = parseFloat(move_first_neighbor.attr("x"))-14;
+            var x_pos_2 = parseFloat(move_second_neighbor.attr("x"))-12;
+            var x_pos_3 = parseFloat(move_third_neighbor.attr("x"))-10;
+            move_first_neighbor
+                .transition()
+                .duration(800)
+                .attr("x", x_pos_1);
+            move_second_neighbor
+                .transition()
+                .duration(700)
+                .attr("x", x_pos_2);
+            move_third_neighbor
+                .transition()
+                .duration(600)
+                .attr("x", x_pos_3);
+          });
 
-        $("#submittext").click(function (){
+        $("#submittext").click(function (e){
+          $("#inputBox").hide();
+          $("#submittext").hide();
+          e.preventDefault();
           getWord(words);
+          // ("#analysis").show)();
         });
+
         var getWord = function(arr) { 
-          var textarr = $("#inputBox").val().split(); 
-          var word = textarr.pop();
-          for (var i=0; i<arr.length; i++){ 
-            if(arr[i].Word == word){
-              console.log(arr[i].Word + word +" same");
-              var classes = $("."+word).attr("class");
-              console.log(classes.split(" ")[0]);
-              $("."+word).css("fill", "red")
+          var formValue = $("#inputBox").val();
+          console.log(formValue);
+          var textarr = formValue.split(" ");
+          var numWordsTotal = textarr.length;//looks good 
+          var paragraphcommonwordsarr = [];
+          while(textarr.length){ 
+                var word = textarr.pop();
+                wordLower = word.toLowerCase()
+            for (var i=0; i<arr.length; i++){
+                if (word==arr[i].Word){
+                  paragraphcommonwordsarr.push(word);
+                  console.log(paragraphcommonwordsarr);
+                  // console.log("blah" + wordstring);
+                  var classes = $("."+word).attr("class");
+                  $("."+word).css("fill", "red");
+                  }
+                else{
+                  console.log("nope");
+                }
             }
           }
+              console.log(numWordsTotal, paragraphcommonwordsarr);    //should not be 0  
+              function addText(num1, num2){            
+                $("#paragraph").text("Of your " + num1 +" words, " + num2);
+              }
+              addText(numWordsTotal, paragraphcommonwordsarr.length);
+          return paragraphcommonwordsarr;
         }
-    
+        //divide into quadrants 
+        var getQuadrant=function(arr, quadrants){
+          var len = arr.length;
+          var percentile = 100;
+          return percentile
+        }
+        var checkComplexity = function(){
+          //used to join independent clauses
+          var coordinators = ["for", "and", "nor", "but", "or", "yet"];
+
+        }
      });
 	</script>
-  <div id="corpusform">
+  <div  id="corpusform">
   <form>
-  <input type="text" maxlength="200" id="inputBox" method="POST"><br>
-  <button type="button" id="submittext">submit</button>
+  <textarea maxlength="200" cols="200" id="inputBox" class="shadow" method="POST"></textarea>
+  <button type="submit" id="submittext">submit</button>
   </form>
   </div>
-  
+  <div id="paragraph">
+blah blah blah 
+  </div>
+  <div id="analysis">
+  </div>
   
   {% endblock %}
