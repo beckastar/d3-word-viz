@@ -3,442 +3,64 @@
 {% extends "base.html" %}
  
 {% block content %}
-
-  <style>
-  body{
-    overflow: hidden;
-  }
-  #wordSquares {
-    position: relative;
-    /*left:  -2800;*/
-    top: 10px;
-    height: 100px;
-    /*overflow-y: scroll;*/
-    position: relative;
-    -webkit-transform:rotate(90deg);
-    -o-transform:rotate(90deg);
-    -moz-transform:rotate(90deg);
-  }
-  #wordContainer {
-    /*background-color: red;*/
-    position: relative;
-    width: 300px;
-    height: 500px;
-    left: 50px;
-    top: -2%;
-    /* top: 2087px; */
-    height: 80%;
-    overflow: scroll;
-
-  }
-  #header {
-    width: 100%;
-    height: 23%;
-    background-color: #F6F6F6;
-    z-index: -1;
-  }
-  #headerimage {
-    position: relative;
-    width: 110%;
-  }
-
-  #dividingline{
-    height: 15px;
-    width: 100%;
-    background-color: black;
-    bottom: 15px;
-    position: relative;
-  }
-
-  .d3-tip {
-    line-height: 1;
-    font-weight: bold;
-    padding: 12px;
-    background: rgba(0, 0, 0, 0.8);
-    color: #fff;
-    border-radius: 2px;
-    border: solid gray;
-    position: absolute;
-  }
-/*  #colorkeygroup {
-  }*/
-  .colorkey {
-    position: relative;
-    left: 8%;
-    width: 50px;
-    height: 50px;
-    border-style: solid;
-    border-color: #BFA0A0;
-    border-radius: 20px;
-    top: 7px;
-    z-index: 5;
-  }
-  .verb.colorkey {
-    background-color: blue;
-  }
-  .conjunction.colorkey {
-    background-color: green;
-  }
-  .pronoun.colorkey {
-    background-color: orange;
-  }
-  .preposition.colorkey {
-    background-color: magenta;
-  }
-  .adverb.colorkey {
-    background-color: red;
-  }
-  #corpusform {
-    position: relative;
-    right: -30%;
-    top: -100%;
-  }
-  #inputbox {
-    width: 2500px;
-    height: 1500px;
-    position: relative;
-    top: 800;
-    left: -100px;
-  }
-  #paragraph {
-    position: relative;
-    top: 1000;
-    left: 2000;
-    color: red;
-    font-size: 16px;
-  }
-
-  textarea{
-    font-size: 1000%;
-    font-family: courier;
-    color: #B09898;
-    resize: none;
-    outline: 0;
-  }
-
-  .shadow {
-    -webkit-box-shadow: 00 18px 37px -11px black;
-    -moz-box-shadow: 0 18px 37px -11px black;
-    box-shadow: 0 18px 37px -11px black;
-  }
-  .d3-tip:after { 
-    display: inline;
-    font-size: 10px;
-    width: 100%;
-    line-height: 1;
-    color: rgba(0, 0, 0, 0.8);
-    content: "\25BC";
-    position: absolute;
-    text-align: center;
-  }
-  .d3-tip.n:after {
-  margin: -1px 0 0 0;
-  top: 100%;
-  left: 0;
-  }
-
-  #temp {
-    width: 10px;
-    height: 20px;
-    background-color: orange;
-  }
-
-  </style>
+  <head>
+  <script src="../static/js/viz.js"></script>
   <div id="header">
       <div >
         <img id="headerimage" src="../static/img/visvocab.jpg">
       </div> 
       <div id="dividingline"></div>
+        <div id="wordtext">
+        </div>
     <div id="buttonpanel"> 
         <button class="verb colorkey"></button>
         <button class="conjunction colorkey"></button>
         <button class="pronoun colorkey"></button>
         <button class="preposition colorkey"></button>
         <button class="adverb colorkey"></button>
+        <button class="synonyms colorkey"></button>
+        <button class="instructions colorkey">?</button>
     </div>
-  </div>
+    <div id="instructionsbox" class="hidden">
+
+      This tool will analyze a paragraph for words that are among the 600 most commonly used in English.<br><br>
+
+      Each black rectangle on the left represents a word in the set of the 600 of most common words, ordered by frequency of use, with the most common on top and the least on the bottom.  Mousing over a given rectangle will display the word it represents, and change its color to reflect its part of speech.<br><br>
+
+      Clicking on a colored circle will highlight all of the words of associated part of speech. You'll know which part of speech you're looking at because a label will appear near the relevant circle to say if you're looking at adjectives, conjunctions, nouns, verbs, adverbs, or prounouns.  You have the option to remove from the set words which have no synonyms.<br><br>
+
+      To submit a paragraph for vocabulary analysis, type into into the text box and hit submit.  Words in your paragraph that are in the most common set will be highlighted in the array of rectangles and in your paragraph. 
+
+    </div>
+    </div>
 
   <div id="wordContainer">
     <div id="wordSquares"></div>
   </div> 
-	<script type="text/javascript"></script>
-	<script>
-	var words = [
-  {"Rank":1,"Word":"the","Pos":"article","Frequency":22038615,"Dispersion":0.98, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":2,"Word":"be", "Pos":"verb","Frequency":12545825,"Dispersion":0.97, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":3,"Word":"and","Pos":"conjunction","Frequency":10741073,"Dispersion":0.99, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":4,"Word":"of","Pos":"preposition","Frequency":10343885,"Dispersion":0.97, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":5,"Word":"a","Pos":"article","Frequency":10144200,"Dispersion":0.98, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":6,"Word":"in","Pos":"preposition","Frequency":6996437,"Dispersion":0.98, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":7,"Word":"have","Pos":"verb","Frequency":4303955,"Dispersion":0.97, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":8,"Word":"to","Pos":"preposition","Frequency":3856916,"Dispersion":0.99, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":9,"Word":"it","Pos":"pronoun","Frequency":3872477,"Dispersion":0.96, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":10,"Word":"I","Pos":"pronoun","Frequency":3978265,"Dispersion":0.93, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":11,"Word":"that","Pos":"conjunction","Frequency":3430996,"Dispersion":0.97, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":12,"Word":"for","Pos":"conjunction","Frequency":3281454,"Dispersion":0.98, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":13,"Word":"you","Pos":"pronoun","Frequency":3081151,"Dispersion":0.92, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":14,"Word":"he","Pos":"pronoun","Frequency":2909254,"Dispersion":0.94, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":15,"Word":"with","Pos":"preposition","Frequency":2683014,"Dispersion":0.99, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":16,"Word":"on","Pos":"preposition","Frequency":2485306,"Dispersion":0.99, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":17,"Word":"do","Pos":"verb","Frequency":2573587,"Dispersion":0.95, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":18,"Word":"say","Pos":"verb","Frequency":1915138,"Dispersion":0.95, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":29,"Word":"this","Pos":"preposition","Frequency":1885366,"Dispersion":0.96, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":30,"Word":"by","Pos":"verb","Frequency":1490548,"Dispersion":0.96, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":31,"Word":"she","Pos":"pronoun","Frequency":1484869,"Dispersion":0.91, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":32,"Word":"or","Pos":"conjunction","Frequency":1379320,"Dispersion":0.97, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":33,"Word":"as","Pos":"conjunction","Frequency":1296879,"Dispersion":0.98, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":34,"Word":"what","Pos":"pronoun","Frequency":1181023,"Dispersion":0.94, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":35,"Word":"go","Pos":"verb","Frequency":1151045,"Dispersion":0.93, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":36,"Word":"their","Pos":"pronoun","Frequency":1083029,"Dispersion":0.97, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":37,"Word":"can","Pos":"verb","Frequency":1022775,"Dispersion":0.98, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":38,"Word":"who","Pos":"pronoun","Frequency":1018283,"Dispersion":0.97, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":39,"Word":"get","Pos":"verb","Frequency":992596,"Dispersion":0.94, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":40,"Word":"if","Pos":"conjunction","Frequency":933542,"Dispersion":0.97, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":52,"Word":"time","Pos":"noun","Frequency":764657,"Dispersion":0.98, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":53,"Word":"there","Pos":"e","Frequency":784528,"Dispersion":0.96, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":54,"Word":"year","Pos":"noun","Frequency":769254,"Dispersion":0.96, "Synonyms":true, "Conjugations":"[]"},
-  {"Rank":55,"Word":"so","Pos":"conjunction","Frequency":756550,"Dispersion":0.95, "Synonyms":true, "Conjugations":"[]"},
-  {"Rank":56,"Word":"think","Pos":"verb","Frequency":772787,"Dispersion":0.91, "Synonyms":true, "Conjugations":"[]"},
-  {"Rank":57,"Word":"when","Pos":"adverb","Frequency":678626,"Dispersion":0.98, "Synonyms":false, "Conjugations":"[]"},  //why is it stopping here?
-  {"Rank":58,"Word":"which","Pos":"pronoun","Frequency":685982,"Dispersion":0.96, "Synonyms":true, "Conjugations":"[]"},
-  {"Rank":59,"Word":"them","Pos":"pronoun","Frequency":677870,"Dispersion":0.97, "Synonyms":true, "Conjugations":"[]"},
-  {"Rank":60,"Word":"some","Pos":"adjective","Frequency":674193,"Dispersion":0.98, "Synonyms":true, "Conjugations":"[]"},
-  {"Rank":61,"Word":"me","Pos":"pronoun","Frequency":709623,"Dispersion":0.92, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":62,"Word":"people","Pos":"noun","Frequency":691468,"Dispersion":0.95, "Synonyms":true, "Conjugations":"[]"},
-  {"Rank":63,"Word":"take","Pos":"verb","Frequency":670745,"Dispersion":0.97, "Synonyms":true, "Conjugations":"[]"},
-  {"Rank":64,"Word":"out","Pos":"r","Frequency":678603,"Dispersion":0.96, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":65,"Word":"into","Pos":"i","Frequency":668172,"Dispersion":0.97, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":66,"Word":"just","Pos":"r","Frequency":677711,"Dispersion":0.94, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":67,"Word":"see","Pos":"verb","Frequency":663645,"Dispersion":0.96, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":68,"Word":"him","Pos":"pronoun","Frequency":677707,"Dispersion":0.92, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":69,"Word":"your","Pos":"a","Frequency":659622,"Dispersion":0.94, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":70,"Word":"come","Pos":"verb","Frequency":628254,"Dispersion":0.95, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":71,"Word":"could","Pos":"verb","Frequency":617932,"Dispersion":0.96, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":72,"Word":"now","Pos":"adverb","Frequency":605997,"Dispersion":0.94, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":73,"Word":"than","Pos":"c","Frequency":579757,"Dispersion":0.97, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":74,"Word":"like","Pos":"i","Frequency":568850,"Dispersion":0.96, "Synonyms":false, "Conjugations":"[]"},
-  {"Rank":75,"Word":"other","Pos":"adverb","Frequency":547799,"Dispersion":0.97, "Synonyms":true, "Conjugations":"[]"}
-  ]
-
-  //fix dataset in excel later 
-  for(i=0; i<words.length; i++){
-    if(words[i].Pos==="article")
-      {words[i].color="red"}
-    else if(words[i].Pos==="verb")
-      {words[i].color="blue"}
-    else if(words[i].Pos==="conjunction")
-      {words[i].color="green"}
-    else if(words[i].Pos==="pronoun")
-      {words[i].color="orange"}
-    else if(words[i].Pos==="preposition")
-      {words[i].color="magenta"}
-    else if(words[i].Pos==="adverb")
-      {words[i].color==="red"}
-  }
-
-    function get_neighboring_ids(element){
-      var x
-      if (element.length ==5){
-        x=1 
-      }
-      else if(element.length ==6){
-        x=2
-      }
-      else if(element.length==7){
-        x=3
-      }
-      var curr_id_num  = parseInt(element.slice(-x));
-      var ids = [];
-      for(var i=1; i<4; i++){
-        ids.push("#rect"+(curr_id_num+i));
-      }
-      return ids;
-    }
-
-    var w = 3600; 
-
-    var h = 900;
-
-    var tip = d3.tip() 
-                .attr('class','d3-tip') 
-                .html(function(d, i) {
-                  return "<span style='color:red'>" + d.Word +"</span>";
-              });
-
-    var svg = d3.select("#wordSquares")
-          			.append("svg")
-          			.attr("width", w)
-          			.attr("height", h)
-
-    svg.selectAll("div")
-        .data(words)
-        .enter()
-        .append("rect")
-        // .attr('transform','translate(100,1)')
-        .attr("x", function(d, i) {
-          return i*(w/50);
-        })
-        .attr("y", function(d){
-          return (h-(850) 
-            );
-        })
-        .attr("width", 40)
-        .attr("id", function(d, i){return "rect"+i} )
-        .attr("class", function(d, i){return d.Pos +" rectangle" + " " + d.Word})
-        .attr("height", function(d, i){
-          return "100px" 
-        })
-        .style("fill", "black")
-        .on("mouseover", tip.show)
-        .on("mouseout", tip.hide);
-        svg.call(tip);
-
-      
-
-    $(document).ready(function(){
-
-        // $(function() {
-        //     $("#wordSquares").mousewheel(function(event, delta) {
-        //       console.log("hey")
-        //         this.scrollLeft -= (delta * -100);
-        //         event.preventDefault();
-        //     });
-        // });
-
-        $(".colorkey").click(function (e) {
-          console.log("clicked");
-          var color = $(this).css("background-color");
-          var currClasses = $(this).attr("class");
-          var targetClass = currClasses.split(" ");
-          var target = "."+targetClass[0]
-          console.log(target);
-          var changeColor = d3.selectAll(target);
-          changeColor.transition()
-                    .duration(1000)
-                    .style("fill", color);
-          e.stopPropagation();
+  <script>
+      $(".instructions").on("click", function(){
+          $("#instructionsbox").toggleClass("hidden");
+          console.log("hidden");
         });
+      $(".rectangle").mouseover(function() {
+          var classNames = $(this).attr("class").split(" ");
+          var word = classNames[2];
+          $("#wordtext").text(word)
+        })
 
-        $('.rectangle').mouseover(function () {
-          var id = "#"+this.id
-          var rect = d3.select(id);
-          rect.transition()
-              .duration(100)
-              .attr("width", 58)
-              .attr("height", 150)
-              .style("fill", function(d, i) {return d.color}); 
-          var ids = get_neighboring_ids(id);
-          var move_first_neighbor = d3.select(ids[0])
-          var move_second_neighbor = d3.select(ids[1])
-          var move_third_neighbor = d3.select(ids[2])
-          var x_pos_1 = parseFloat(move_first_neighbor.attr("x"))+14;
-          var x_pos_2 = parseFloat(move_second_neighbor.attr("x"))+12;
-          var x_pos_3 = parseFloat(move_third_neighbor.attr("x"))+10;
-          move_first_neighbor
-              .transition()
-              .duration(200)
-              .attr("x", x_pos_1);
-          move_second_neighbor
-              .transition()
-              .duration(100)
-              .attr("x", x_pos_2);
-          move_third_neighbor
-              .transition()
-              .duration(200)
-              .attr("x", x_pos_3);
-            });
-        
-        $('.rectangle').mouseleave(function () {
-            var rect = d3.select("#"+this.id)
-            rect.transition()
-                .duration(100)
-                .attr("width", 40)
-                .attr("height", function(d, i){
-                  return "100px" 
-                })
-                .style("fill", "black"); 
-            var rect_id = this.id;
-            var ids = get_neighboring_ids(rect_id);
-            var move_first_neighbor = d3.select(ids[0])
-            var move_second_neighbor = d3.select(ids[1])
-            var move_third_neighbor = d3.select(ids[2])
-            var x_pos_1 = parseFloat(move_first_neighbor.attr("x"))-14;
-            var x_pos_2 = parseFloat(move_second_neighbor.attr("x"))-12;
-            var x_pos_3 = parseFloat(move_third_neighbor.attr("x"))-10;
-            move_first_neighbor
-                .transition()
-                .duration(800)
-                .attr("x", x_pos_1);
-            move_second_neighbor
-                .transition()
-                .duration(700)
-                .attr("x", x_pos_2);
-            move_third_neighbor
-                .transition()
-                .duration(600)
-                .attr("x", x_pos_3);
-          });
+  </script>
 
-        $("#submittext").click(function (e){
-          $("#inputBox").hide();
-          $("#submittext").hide();
-          e.preventDefault();
-          getWord(words);
-          // ("#analysis").show)();
-        });
-
-        var getWord = function(arr) { 
-          var formValue = $("#inputBox").val();
-          console.log(formValue);
-          var textarr = formValue.split(" ");
-          var numWordsTotal = textarr.length;//looks good 
-          var paragraphcommonwordsarr = [];
-          while(textarr.length){ 
-                var word = textarr.pop();
-                wordLower = word.toLowerCase()
-            for (var i=0; i<arr.length; i++){
-                if (word==arr[i].Word){
-                  paragraphcommonwordsarr.push(word);
-                  console.log(paragraphcommonwordsarr);
-                  // console.log("blah" + wordstring);
-                  var classes = $("."+word).attr("class");
-                  $("."+word).css("fill", "red");
-                  }
-                else{
-                  console.log("nope");
-                }
-            }
-          }
-              console.log(numWordsTotal, paragraphcommonwordsarr);    //should not be 0  
-              function addText(num1, num2){            
-                $("#paragraph").text("Of your " + num1 +" words, " + num2);
-              }
-              addText(numWordsTotal, paragraphcommonwordsarr.length);
-          return paragraphcommonwordsarr;
-        }
-        //divide into quadrants 
-        var getQuadrant=function(arr, quadrants){
-          var len = arr.length;
-          var percentile = 100;
-          return percentile
-        }
-        var checkComplexity = function(){
-          //used to join independent clauses
-          var coordinators = ["for", "and", "nor", "but", "or", "yet"];
-
-        }
-     });
-	</script>
   <div  id="corpusform">
-  <form>
+  <div>
   <textarea maxlength="200" cols="200" id="inputBox" class="shadow" method="POST"></textarea>
   <button type="submit" id="submittext">submit</button>
-  </form>
+  </div>
   </div>
   <div id="paragraph">
 blah blah blah 
   </div>
   <div id="analysis">
   </div>
+  <script src="{{ url_for('static', filename='../static/js/viz.js') }}"></script>
   
   {% endblock %}

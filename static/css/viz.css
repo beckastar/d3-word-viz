@@ -1,0 +1,188 @@
+ body{
+    overflow: hidden;
+  }
+  #wordSquares {
+    position: relative;
+    /*left:  -2800;*/
+    top: 10px;
+    height: 100px;
+    /*overflow-y: scroll;*/
+    position: relative;
+    -webkit-transform:rotate(90deg);
+    -o-transform:rotate(90deg);
+    -moz-transform:rotate(90deg);
+  }
+  #wordContainer {
+    position: relative;
+    width: 300px;
+    height: 500px;
+    left: 50px;
+    top: -2%;
+    height: 80%;
+    overflow: scroll;
+
+  }
+  #header {
+    width: 100%;
+    height: 23%;
+    background-color: #F6F6F6;
+    z-index: -1;
+  }
+  #headerimage {
+    position: relative;
+    width: 110%;
+  }
+
+  #dividingline{
+    height: 15px;
+    width: 100%;
+    background-color: black;
+    bottom: 15px;
+    position: relative;
+  }
+
+  .d3-tip {
+    line-height: 1;
+    font-weight: bold;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 2px;
+    border: solid gray;
+    position: absolute;
+    -webkit-transform:rotate(90deg);
+    -o-transform:rotate(90deg);
+    -moz-transform:rotate(90deg);
+  }
+
+  .colorkey {
+    position: relative;
+    left: 11%;
+    width: 1.7%;
+    height: 10%;
+    border-style: solid;
+    border-color: #988D8D;
+    border-radius: 67px;
+    top: 7px;
+    z-index: 5;
+  }
+  .verb.colorkey {
+    background-color: blue;
+  }
+  .conjunction.colorkey {
+    background-color: green;
+  }
+  .pronoun.colorkey {
+    background-color: orange;
+  }
+  .preposition.colorkey {
+    background-color: magenta;
+  }
+  .adverb.colorkey {
+    background-color: red;
+  }
+  .instructions.colorkey {
+    background-color: yellow;
+    top: 1px;
+    font-size: 4em;
+  }
+  .synonyms.colorkey {
+    background-color: paleturquoise;
+  }
+  #corpusform {
+    position: relative;
+    right: -30%;
+    top: -100%;
+  }
+  #inputbox {
+    width: 2500px;
+    height: 1500px;
+    position: relative;
+    top: 1300;
+    left: -100px;
+  }
+  #paragraph {
+    position: relative;
+    top: 1000;
+    left: 2000;
+    color: red;
+    font-size: 16px;
+    visibility: hidden;
+  }
+
+  textarea{
+    font-size: 1000%;
+    font-family: courier;
+    color: #B09898;
+    resize: none;
+    outline: 0;
+  }
+  #submittext {
+    position: relative;
+    bottom: -862px;
+    left: -2620px;
+    background-color: #FAFAFA;
+    border-radius: 19px;
+  }
+  .shadow {
+    -webkit-box-shadow: 00 18px 37px -11px black;
+    -moz-box-shadow: 0 18px 37px -11px black;
+    box-shadow: 0 18px 37px -11px black;
+  }
+  .d3-tip:after { 
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.8);
+    content: "\25BC";
+    position: relative;
+    text-align: center;
+  }
+  .d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+  }
+
+/*should be same styling as tooltips later */
+  #textlengthmessage {
+    width: 300px;
+    height: 100px;
+  }
+  #wordtext {
+    width: 6%;
+    height: 10%;
+    background-color: white;
+    position: relative;
+    left: 6.5%;
+    top: 13%;
+    border-style: solid;
+    border-color: #726969;
+    border-width: 8px;
+    border-radius: 9px;
+    text-align: center;
+  }
+  #buttonpanel {
+    height: 800px;
+    position: relative;
+    left: 3%;
+
+  }
+  .hidden {
+    visibility: hidden;
+  }
+  #instructionsbox {
+    width: 1000;
+    height: 1500;
+    background-color: white;
+    border: solid #CCCCCC;
+    font-family: "Times New Roman", Times, serif;
+    font-color: black;
+    font-size: 3em;
+    position: relative;
+    top: -303px;
+    left: 400;
+    overflow: scroll;
+  }
+
